@@ -10,6 +10,60 @@
 char textureArray[ROWS][COLS];
 int GAMEOVER = 0;
 
+void printGameIntro(void) {
+    gotoxy(0,0);
+    printf("\
+|-----------------------------------------------------------------------------------------------------------------------------------------------------|\n\
+|                                                                                                                                                     |\n\
+|                                                                                                                                                     |\n\
+|                                  FFFFFFFFF  LL                  A            PPPPPPP      PPPPPPP     YY      YY                                    |\n\
+|                                  FF         LL                AA AA          PP     P     PP     P     YY    YY                                     |\n\
+|                                  FFFFFFFF   LL               AA   AA         PPPPPPP      PPPPPPP       YY  YY                                      |\n\
+|                                  FF         LL              AAAAAAAAA        PP           PP              YY                                        |\n\
+|                                  FF         LL             AA       AA       PP           PP              YY                                        |\n\
+|                                  FF         LLLLLLLLL     AAA       AAA      PP           PP              YY                                        |\n\
+|                                                                                                                                                     |\n\
+|                                                                                                                                                     |\n\
+|                                                     BBBBBB     II   RRRRRR       DDDD                                                               |\n\
+|                                                     BB   BB    II   RR    RR     DD   DD                                                            |\n\
+|                                                     BBBBBBB    II   RR    RR     DD     D                                                           |\n\
+|                                                     BB    BB   II   RR RR        DD     D                                                           |\n\
+|                                                     BB     B   II   RR   RR      DD    DD                                                           |\n\
+|                                                     BBBBBBB    II   RR     RR    DDDDDD                                                             |\n\
+|                                                                                                                                                     |\n\
+|                                                              V 1.0 By TheStef                                                                       |\n\
+|                                                                                                                                                     |\n\
+|                                             COMMANDS:                                                                                               |\n\
+|                                                      JUMP: ARROW-UP                                                                                 |\n\
+|                                                      EXIT: CTRL+C                                                                                   |\n\
+|                                                      START/NEW-GAME (when game is over): ENTER                                                      |\n\
+|                                                                                                                                                     |\n\
+|                                                                                                                                                     |\n\
+|                                                                                                                                                     |\n\
+|-----------------------------------------------------------------------------------------------------------------------------------------------------|\n\
+                                                                                                                                                       \n\
+                                                                                                                                                       \n\
+                                                                                                                                                       \n");
+}
+
+void printGameOver(void) {
+    gotoxy(0, 8);
+    printf("\
+|                                               GGGG              A         MM          MM   EEEEEEEEEEE\n\
+|                                           GGG      GG         AA AA       MMMM      MMMM   EE\n\
+|                                           GG                 AA   AA      MM  MM  MM  MM   EEEEEEEEEEE\n\
+|                                           GG   GGGGGGG      AAAAAAAAA     MM    MM    MM   EE\n\
+|                                            GGG   GG        AA       AA    MM          MM   EE\n\
+|                                               GGGGG       AAA       AAA   MM          MM   EEEEEEEEEEE\n\
+|\n\
+|                                               OOOO       VV           VV   EEEEEEEEEEE     RRRRRR\n\
+|                                            OO      OO     VV         VV    EE              RR    RR\n\
+|                                           O          O     VV       VV     EEEEEEEEEEE     RR    RR\n\
+|                                           O          O      VV     VV      EE              RR RR\n\
+|                                            OO      OO         VV VV        EE              RR   RR\n\
+|                                               OOOO              V          EEEEEEEEEEE     RR     RR");
+}
+
 void initArray(char a[ROWS][COLS]) {
     for (int row = 0; row < ROWS; row++) {
         for (int x = 0; x < COLS; x++){
@@ -21,7 +75,7 @@ void initArray(char a[ROWS][COLS]) {
                 a[row][x] = '|';
             } else if (row == 0 || row == (ROWS-1)) {
                 a[row][x] = '-';
-            }  else if (row == ROWS/2|| row == ROWS/2+1){
+            }  else if (row == ROWS/3|| row == ROWS/3+1){
                 if (x == 8 || x == 9 || x == 10) {
                     a[row][x] = 'G';
                 } else {
@@ -102,7 +156,7 @@ void shiftPlayer(char a[ROWS][COLS], int y){
         for (int row = 1; row < ROWS; row++) {
             for (int x = 8; x < 11; x++) {
                 if (a[row][x] == 'G') {
-                    if (row <= 2) {
+                    if (row <= 1) {
                         GAMEOVER = 1;
                         return;
                     }
@@ -136,63 +190,10 @@ void hideCursor(void){
     SetConsoleCursorInfo(consoleHandle, &info);
 }
 
-void printGameIntro(void) {
-    gotoxy(0,0);
-    printf("\
-|-----------------------------------------------------------------------------------------------------------------------------------------------------|\n\
-|                                                                                                                                                     |\n\
-|                                                                                                                                                     |\n\
-|                                  FFFFFFFFF  LL                  A            PPPPPPP      PPPPPPP     YY      YY                                    |\n\
-|                                  FF         LL                AA AA          PP     P     PP     P     YY    YY                                     |\n\
-|                                  FFFFFFFF   LL               AA   AA         PPPPPPP      PPPPPPP       YY  YY                                      |\n\
-|                                  FF         LL              AAAAAAAAA        PP           PP              YY                                        |\n\
-|                                  FF         LL             AA       AA       PP           PP              YY                                        |\n\
-|                                  FF         LLLLLLLLL     AAA       AAA      PP           PP              YY                                        |\n\
-|                                                                                                                                                     |\n\
-|                                                                                                                                                     |\n\
-|                                                     BBBBBB     II   RRRRRR       DDDD                                                               |\n\
-|                                                     BB   BB    II   RR    RR     DD   DD                                                            |\n\
-|                                                     BBBBBBB    II   RR    RR     DD     D                                                           |\n\
-|                                                     BB    BB   II   RR RR        DD     D                                                           |\n\
-|                                                     BB     B   II   RR   RR      DD    DD                                                           |\n\
-|                                                     BBBBBBB    II   RR     RR    DDDDDD                                                             |\n\
-|                                                                                                                                                     |\n\
-|                                                              V 1.0 By TheStef                                                                       |\n\
-|                                                                                                                                                     |\n\
-|                                             COMMANDS:                                                                                               |\n\
-|                                                      JUMP: ARROW-UP                                                                                 |\n\
-|                                                      EXIT: CTRL+C                                                                                   |\n\
-|                                                      START/NEW-GAME (when game is over): ENTER                                                      |\n\
-|                                                                                                                                                     |\n\
-|                                                                                                                                                     |\n\
-|                                                                                                                                                     |\n\
-|-----------------------------------------------------------------------------------------------------------------------------------------------------|\n\
-                                                                                                                                                       \n\
-                                                                                                                                                       \n\
-                                                                                                                                                       \n");
-}
-
-void printGameOver(void) {
-    gotoxy(0, 8);
-    printf("\
-|                                               GGGG              A         MM          MM   EEEEEEEEEEE\n\
-|                                           GGG      GG         AA AA       MMMM      MMMM   EE\n\
-|                                           GG                 AA   AA      MM  MM  MM  MM   EEEEEEEEEEE\n\
-|                                           GG   GGGGGGG      AAAAAAAAA     MM    MM    MM   EE\n\
-|                                            GGG   GG        AA       AA    MM          MM   EE\n\
-|                                               GGGGG       AAA       AAA   MM          MM   EEEEEEEEEEE\n\
-|\n\
-|                                               OOOO       VV           VV   EEEEEEEEEEE     RRRRRR\n\
-|                                            OO      OO     VV         VV    EE              RR    RR\n\
-|                                           O          O     VV       VV     EEEEEEEEEEE     RR    RR\n\
-|                                           O          O      VV     VV      EE              RR RR\n\
-|                                            OO      OO         VV VV        EE              RR   RR\n\
-|                                               OOOO              V          EEEEEEEEEEE     RR     RR");
-}
-
 void startGame(void) {
     int count = 0;
     int top = 0;
+    Sleep(500);
     printGameIntro();
     while(1) {
         if(GetAsyncKeyState(VK_RETURN) & 0x8000) {
@@ -202,38 +203,40 @@ void startGame(void) {
         }                
     }
     while (1) {
-        if (GAMEOVER) {
-            printGameOver();
-            while (1){
-                if(GetAsyncKeyState(VK_RETURN) & 0x8000) {
-                    gotoxy(0, 0);
-                    count = 0;
-                    top = 0;
-                    GAMEOVER = 0;
-                    initArray(textureArray);
-                    break;
-                }                
-            }
-        }
-        shiftArrayTick(textureArray, 5);
-        if (GetAsyncKeyState(VK_UP) & 0x8000) {
-            shiftPlayer(textureArray, -3);
-        } else {
-            shiftPlayer(textureArray, 3);
-        }
-        if (count >= TOWERSIZE) {
-            int r = rand()%3;
-            if (r == 2) {
-                int height = 10 + rand()%5;
-                if (top) {
-                    insertTower(textureArray, -height);
-                    top = 0;
-                } else {
-                    insertTower(textureArray, height);
-                    top = 1;
+        for (int a = 0; a < 1; a++) {
+            if (GAMEOVER) {
+                printGameOver();
+                while (1){
+                    if(GetAsyncKeyState(VK_RETURN) & 0x8000) {
+                        gotoxy(0, 0);
+                        count = 0;
+                        top = 0;
+                        GAMEOVER = 0;
+                        initArray(textureArray);
+                        break;
+                    }                
                 }
-                count = 0;
-            } 
+            }
+            shiftArrayTick(textureArray, 2);
+            if (GetAsyncKeyState(VK_UP) & 0x8000) {
+                shiftPlayer(textureArray, -1);
+            } else {
+                shiftPlayer(textureArray, 1);
+            }
+            if (count >= TOWERSIZE) {
+                int r = rand()%3;
+                if (r == 2) {
+                    int height = 10 + rand()%5;
+                    if (top) {
+                        insertTower(textureArray, -height);
+                        top = 0;
+                    } else {
+                        insertTower(textureArray, height);
+                        top = 1;
+                    }
+                    count = 0;
+                } 
+            }
         }
         printMat(textureArray);
         gotoxy(0, 0); 
