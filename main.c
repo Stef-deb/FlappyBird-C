@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
+#include <math.h>
 
 #define ROWS 27
 #define COLS 160
@@ -9,6 +10,9 @@
 
 char textureArray[ROWS][COLS];
 int GAMEOVER = 0;
+float SCORE = 0;
+int DIFFICULTY = 1;
+int HIGHSCORE = 0;
 
 void printGameIntro(void) {
     gotoxy(0,0);
@@ -31,7 +35,7 @@ void printGameIntro(void) {
 |                                                     BB     B   II   RR   RR      DD    DD                                                           |\n\
 |                                                     BBBBBBB    II   RR     RR    DDDDDD                                                             |\n\
 |                                                                                                                                                     |\n\
-|                                                              V 1.0 By TheStef                                                                       |\n\
+|                                                              V 2.0 By TheStef                                                                       |\n\
 |                                                                                                                                                     |\n\
 |                                             COMMANDS:                                                                                               |\n\
 |                                                      JUMP: ARROW-UP                                                                                 |\n\
@@ -112,6 +116,7 @@ void shiftArrayTick (char a[ROWS][COLS], int jump_size) {
                 if (a[row][x-jump_size] == 'G') GAMEOVER = 1;
                 if (x <= jump_size) {
                     a[row][x] = ' ';
+                    SCORE += 0.1;
                 } else {
                     int check = 0;
                     for (int m = 0; m < jump_size; m++) {
@@ -147,8 +152,8 @@ void printMat(char a[ROWS][COLS]) {
         }
     }
     printf("                                                                                                                                                        \n\
-                                                                                                                                                        \n\
-                                                                                                                                                        \n");
+                                   STAGE (1-4): %d                       SCORE: %d                         HIGH SCORE: %d                               \n\
+                                                                                                                                                        \n", DIFFICULTY, (int)SCORE, HIGHSCORE);
 }
 
 void shiftPlayer(char a[ROWS][COLS], int y){
@@ -193,6 +198,7 @@ void hideCursor(void){
 void startGame(void) {
     int count = 0;
     int top = 0;
+    int delim = TOWERSIZE;
     Sleep(500);
     printGameIntro();
     while(1) {
@@ -203,7 +209,7 @@ void startGame(void) {
         }                
     }
     while (1) {
-        for (int a = 0; a < 1; a++) {
+        for (int a = 0; a < DIFFICULTY; a++) {
             if (GAMEOVER) {
                 printGameOver();
                 while (1){
@@ -212,6 +218,9 @@ void startGame(void) {
                         count = 0;
                         top = 0;
                         GAMEOVER = 0;
+                        HIGHSCORE = SCORE;
+                        SCORE = 0;
+                        DIFFICULTY = 1;
                         initArray(textureArray);
                         break;
                     }                
@@ -223,7 +232,17 @@ void startGame(void) {
             } else {
                 shiftPlayer(textureArray, 1);
             }
-            if (count >= TOWERSIZE) {
+            if (SCORE >= 100) {
+                if (DIFFICULTY == 1) DIFFICULTY = 2;
+                if (SCORE >= 300) {
+                    if (DIFFICULTY == 2) DIFFICULTY = 3;
+                    if (SCORE >= 500) {
+                        if (DIFFICULTY == 3) DIFFICULTY = 4;
+                    }
+                }
+            }
+            delim = (int)(16 * (1/sqrt(DIFFICULTY)));
+            if (count >= delim) {
                 int r = rand()%3;
                 if (r == 2) {
                     int height = 10 + rand()%5;
