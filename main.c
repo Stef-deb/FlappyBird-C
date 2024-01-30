@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
-#include <math.h>
+#include <time.h>
 
 #define ROWS 27
 #define COLS 160
@@ -13,6 +13,7 @@ int GAMEOVER = 0;
 float SCORE = 0;
 int DIFFICULTY = 1;
 int HIGHSCORE = 0;
+float FPS = 0;
 
 void printGameIntro(void) {
     gotoxy(0,0);
@@ -35,7 +36,7 @@ void printGameIntro(void) {
 |                                                     BB     B   II   RR   RR      DD    DD                                                           |\n\
 |                                                     BBBBBBB    II   RR     RR    DDDDDD                                                             |\n\
 |                                                                                                                                                     |\n\
-|                                                              V 2.0 By TheStef                                                                       |\n\
+|                                                              V 2.1 By TheStef                                                                       |\n\
 |                                                                                                                                                     |\n\
 |                                             COMMANDS:                                                                                               |\n\
 |                                                      JUMP: ARROW-UP                                                                                 |\n\
@@ -152,8 +153,9 @@ void printMat(char a[ROWS][COLS]) {
         }
     }
     printf("                                                                                                                                                        \n\
-                                   STAGE (1-4): %d                       SCORE: %d                         HIGH SCORE: %d                               \n\
-                                                                                                                                                        \n", DIFFICULTY, (int)SCORE, HIGHSCORE);
+             STAGE (1-4): %d                      SCORE: %d                         HIGH SCORE: %d                       FPS: %.2f                      \n\
+                                                                                                                                                        \n",\
+            DIFFICULTY, (int)SCORE, HIGHSCORE, FPS);
 }
 
 void shiftPlayer(char a[ROWS][COLS], int y){
@@ -198,7 +200,9 @@ void hideCursor(void){
 void startGame(void) {
     int count = 0;
     int top = 0;
-    int delim = TOWERSIZE;
+    int delim = TOWERSIZE*2;
+    time_t t1 = 0;
+    time_t t2 = 0;
     Sleep(500);
     printGameIntro();
     while(1) {
@@ -209,6 +213,9 @@ void startGame(void) {
         }                
     }
     while (1) {
+        t2 = clock();
+        FPS = (float)1000/(t2-t1);
+        t1 = t2;
         for (int a = 0; a < DIFFICULTY; a++) {
             if (GAMEOVER) {
                 printGameOver();
@@ -233,15 +240,23 @@ void startGame(void) {
                 shiftPlayer(textureArray, 1);
             }
             if (SCORE >= 100) {
-                if (DIFFICULTY == 1) DIFFICULTY = 2;
+                if (DIFFICULTY == 1) {
+                        DIFFICULTY = 2;
+                        delim = 13;
+                    }
                 if (SCORE >= 300) {
-                    if (DIFFICULTY == 2) DIFFICULTY = 3;
+                    if (DIFFICULTY == 2) {
+                            DIFFICULTY = 3;
+                            delim = 10;
+                        }
                     if (SCORE >= 500) {
-                        if (DIFFICULTY == 3) DIFFICULTY = 4;
+                        if (DIFFICULTY == 3) {
+                            DIFFICULTY = 4;
+                            delim = 8;
+                        }
                     }
                 }
             }
-            delim = (int)(16 * (1/sqrt(DIFFICULTY)));
             if (count >= delim) {
                 int r = rand()%3;
                 if (r == 2) {
@@ -260,9 +275,7 @@ void startGame(void) {
         printMat(textureArray);
         gotoxy(0, 0); 
         count++;
-   
     }
-
 }
 
 int main(void){
