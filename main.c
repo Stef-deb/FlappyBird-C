@@ -240,20 +240,11 @@ void startGame(void) {
                 shiftPlayer(textureArray, 1);
             }
             if (SCORE >= 100) {
-                if (DIFFICULTY == 1) {
-                        DIFFICULTY = 2;
-                        delim = TOWERSIZE*2-3;
-                    }
+                if (DIFFICULTY == 1) DIFFICULTY = 2;
                 if (SCORE >= 300) {
-                    if (DIFFICULTY == 2) {
-                            DIFFICULTY = 3;
-                            delim = TOWERSIZE*2-6;
-                        }
+                    if (DIFFICULTY == 2) DIFFICULTY = 3;
                     if (SCORE >= 500) {
-                        if (DIFFICULTY == 3) {
-                            DIFFICULTY = 4;
-                            delim = TOWERSIZE;
-                        }
+                        if (DIFFICULTY == 3) DIFFICULTY = 4;
                     }
                 }
             }
@@ -271,10 +262,11 @@ void startGame(void) {
                     count = 0;
                 } 
             }
+            count++;
         }
         printMat(textureArray);
         gotoxy(0, 0); 
-        count++;
+        
     }
 }
 
