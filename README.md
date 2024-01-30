@@ -16,7 +16,7 @@
                                      BB     B   II   RR   RR      DD    DD        
                                      BBBBBBB    II   RR     RR    DDDDDD      
                                                                           
-                                              V 2.0 By TheStef               
+                                              V 2.1 By TheStef               
                                                               
                              COMMANDS:                     
                                       JUMP: ARROW-UP                         
