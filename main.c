@@ -271,6 +271,7 @@ void startGame(void) {
 }
 
 int main(void){
+    system("");
     initArray(textureArray);
     hideCursor();
     startGame();
